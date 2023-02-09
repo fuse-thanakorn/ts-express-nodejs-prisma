@@ -1,12 +1,3 @@
-<a href="https://snyk.io//test/github/sidhantpanda/docker-express-typescript-boilerplate?targetFile=package.json">
-  <img src="https://snyk.io//test/github/sidhantpanda/docker-express-typescript-boilerplate/badge.svg?targetFile=package.json" alt="Known Vulnerabilities" data-canonical-src="https://snyk.io//test/github/sidhantpanda/docker-express-typescript-boilerplate?targetFile=package.json" style="max-width:100%;">
-</a>
-<a href="#">
-  <img src="https://github.com/sidhantpanda/docker-express-typescript-boilerplate/workflows/Publish%20latest%20image/badge.svg" alt="Publish latest image" style="max-width:100%;">
-</a>
-
----
-
 # Express TypeScript Boilerplate
 This repo can be used as a starting point for backend development with Nodejs. It comes bundled with Docker and is CI/CD optimized. The development environment uses `docker-compose` to start dependent services like mongo.
 
@@ -30,7 +21,7 @@ A few things to note in the project:
 #### 1. Clone this repo
 
 ```
-$ git clone git@github.com:sidhantpanda/docker-express-typescript-boilerplate.git your-app-name
+$ git clone git@github.com:fuse-thanakorn/ts-express-nodejs-prisma.git your-app-name
 $ cd your-app-name
 ```
 
