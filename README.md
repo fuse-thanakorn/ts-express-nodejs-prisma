@@ -15,7 +15,6 @@ A few things to note in the project:
 * **[Dockerfile](https://github.com/sidhantpanda/docker-express-typescript-boilerplate/blob/master/Dockerfile)** - Dockerfile to generate docker builds.
 * **[docker-compose](https://github.com/sidhantpanda/docker-express-typescript-boilerplate/blob/master/docker-compose.yml)** - Docker compose script to start service in production mode.
 * **[Containerized Mongo for development](#development)** - Starts a local mongo container with data persistence across runs.
-* **[Safe Mongooose Connection Helper](https://github.com/sidhantpanda/docker-express-typescript-boilerplate/blob/master/src/lib/safe-mongoose-connection.ts)** - A helper class to connect with Mongoose reliably.
 * **Joi** - For declarative payload validation
 * **[Middleware for easier async/await](https://github.com/sidhantpanda/docker-express-typescript-boilerplate/blob/master/src/middleware/request-middleware.ts)** - Catches errors from routes and throws them to express error handler to prevent app crash due to uncaught errors.
 * **[OpenAPI 3.0 Spec](https://github.com/sidhantpanda/docker-express-typescript-boilerplate/blob/master/openapi.json)** - A starter template to get started with API documentation using OpenAPI 3.0. This API spec is also available when running the development server at `http://localhost:3000/dev/api-docs`
@@ -25,12 +24,6 @@ A few things to note in the project:
 * **Jest** - Using Jest for running test cases
 
 ## I. Installation
-
-### Using `curl`
-
-```
-$ bash <(curl -s https://raw.githubusercontent.com/sidhantpanda/public/master/scripts/generate-express-ts-app.sh)
-```
 
 ### Manual Method
 
@@ -63,13 +56,13 @@ Starting the dev server also starts MongoDB as a service in a docker container u
 $ yarn dev
 ```
 Running the above commands results in 
-* 🌏**API Server** running at `http://localhost:3000`
-* ⚙️**Swagger UI** at `http://localhost:3000/dev/api-docs`
-* 🛢️**MongoDB** running at `mongodb://localhost:27017`
+* 🌏**API Server** running at `http://localhost:8000`
+* ⚙️**Swagger UI** at `http://localhost:8000/dev/api-docs` (not available for this project)
+* 🛢️**PostgresDB** running at `postgresql://<user>:<password>@127.0.0.1:5433/baania`
 
-## IV. Packaging and Deployment
+## IV. Packaging and Deployment ( not available yet )
 
-The mongo container is only only available in dev environment. When you build and deploy the docker image, be sure to provide the correct **[environment variables](#environment)**.
+The postgres container is only only available in dev environment. When you build and deploy the docker image, be sure to provide the correct **[environment variables](#environment)**.
 
 #### 1. Build and run without Docker
 
@@ -77,23 +70,11 @@ The mongo container is only only available in dev environment. When you build an
 $ yarn build && yarn start
 ```
 
-#### 2. Run with docker
-
-```
-$ docker build -t api-server .
-$ docker run -t -i \
-      --env NODE_ENV=production \
-      --env MONGO_URL=mongodb://host.docker.internal:27017/books \
-      -p 3000:3000 \
-      api-server
-```
-
-#### 3. Run with docker-compose
+#### 2. Run with docker-compose
 
 ```
 $ docker-compose up
 ```
-
 
 ---
 
@@ -103,8 +84,8 @@ To edit environment variables, create a file with name `.env` and copy the conte
 | Var Name  | Type  | Default | Description  |
 |---|---|---|---|
 | NODE_ENV  | string  | `development` |API runtime environment. eg: `staging`  |
-|  PORT | number  | `3000` | Port to run the API server on |
-|  MONGO_URL | string  | `mongodb://localhost:27017/books` | URL for MongoDB |
+|  PORT | number  | `8000` | Port to run the API server on |
+|  MONGO_URL | string  | `postgresql://<user>:<password>@<host>:5433/baania` | URL for MongoDB |
 
 ## Logging
 The application uses [winston](https://github.com/winstonjs/winston) as the default logger. The configuration file is at `src/logger.ts`.
@@ -122,28 +103,42 @@ The application uses [winston](https://github.com/winstonjs/winston) as the defa
 |   +-- setup-github-actions.sh
 +-- src
 |   +-- controllers
-|   |   +-- book
-|   |   |   +-- add.ts
-|   |   |   +-- all.ts
-|   |   |   +-- get.ts
-|   |   |   +-- index.ts
-|   |   |   +-- remove.ts
-|   |   |   +-- search.ts
+|   |   +-- index.ts
+|   |   +-- house.controller.ts
+|   |   +-- postCode.controller.ts
 |   +-- errors
 |   |   +-- application-error.ts
 |   |   +-- bad-request.ts
 |   +-- lib
-|   |   +-- safe-mongo-connection.ts
 |   |   +-- winston-console-transport.ts
 |   +-- middleware
-|   |   +-- request-middleware.ts
-|   +-- models
-|   |   +-- Book.ts
+|   |   +-- error.ts
+|   |   +-- rateLimiter.ts
+|   |   +-- validate.ts
+|   |   +-- xss.ts
+|   +-- routes
+|   |   +--v1
+|   |   |   +-- index.ts
+|   |   |   +-- house.routes.ts
+|   |   |   +-- postCode.routes.ts
+|   +-- services
+|   |   +-- index.ts
+|   |   +-- house.service.ts
+|   |   +-- postCode.service.ts
+|   +-- utils
+|   |   +-- ApiError.ts
+|   |   +-- catchAsync.ts
+|   |   +-- exclude.ts
+|   |   +-- pick.ts
+|   +-- validations
+|   |   +-- index.ts
+|   |   +-- house.validation.ts
+|   |   +-- postCode.validation.ts
 |   +-- public
 |   |   +-- index.html
 |   +-- app.ts
+|   +-- client.ts
 |   +-- logger.ts
-|   +-- routes.ts
 |   +-- server.ts
 +-- .env.default
 +-- .eslintrc.json
