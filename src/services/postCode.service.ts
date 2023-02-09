@@ -1,13 +1,14 @@
+/* eslint-disable prefer-const */
 /* eslint-disable camelcase */
 import { Prisma, House } from '@prisma/client';
 
 import prisma from '../client';
 
 interface medAndMeanResponseType {
-  average: number;
-  median: number;
+  average: number | 0;
+  median: number | 0;
 }
-type resMedMean = medAndMeanResponseType;
+
 /**
  * Query for users
  * @param {Object} filter - Mongo filter
@@ -18,18 +19,17 @@ const queryPostCodes = async (
   filter: object
 ): Promise<Omit<House, 'id' | 'name' | 'desc' | 'price' | 'post_code'>[]> => {
   const houses = await prisma.house.findMany({
-    select: {
-      post_code: true
-    }
+    select: { post_code: true },
+    distinct: 'post_code'
   });
   return houses;
 };
-function findMean(a: number[]): number {
+function findMean(numbers: number[]): number {
   let sum = 0;
-  const n = a.length;
+  const n = numbers.length;
   // eslint-disable-next-line no-plusplus
   for (let i = 0; i < n; i++) {
-    sum += a[i];
+    sum += numbers[i];
   }
 
   return sum / n;
@@ -48,19 +48,23 @@ const queryPostCodeById = async (
   select: Prisma.HouseSelect = {
     price: true
   }
-): Promise<any> => {
+): Promise<medAndMeanResponseType> => {
+  let average: number | 0;
+  let median: number | 0;
+
   const result = await prisma.house.findMany({
     where: { post_code: id },
     select
   });
-  const priceList = await result
-    .map(p => (typeof p.price === 'string' ? parseInt(p.price, 10) : p.price))
-    .filter(price => typeof price !== 'undefined');
-  const average = findMean(priceList);
-  const median = findMedian(priceList);
 
-  const res = { average, median };
-  return res;
+  const priceList = (await result
+    .map(p => (typeof p.price === 'string' ? parseInt(p.price, 10) : p.price))
+    .filter(price => typeof price === 'number')) as number[];
+
+  average = findMean(priceList) || 0;
+  median = findMedian(priceList) || 0;
+
+  return { average, median };
 };
 
 export default {

@@ -10,7 +10,7 @@ services:
     environment:
       - NODE_ENV=production
       - PORT=3000
-      - MONGO_URL=mongodb://host.docker.internal:27017/books
+      - DATABASE_URL="postgresql://postgres:qwerty@127.0.0.1:5433/baania?schema=public"
     volumes:
       - ./logs:/logs
     networks:

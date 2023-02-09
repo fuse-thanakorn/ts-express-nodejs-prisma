@@ -15,7 +15,7 @@ const getPostCodeById = catchAsync(async (req, res) => {
   if (!payload) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Post Code not found');
   }
-  res.send(payload);
+  res.send({ payload });
 });
 
 export default {

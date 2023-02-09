@@ -13,14 +13,6 @@ import logger from './logger';
 let server: Server;
 const PORT = process.env.PORT || 3000;
 
-// import { Pool } from 'pg';
-// const pool = new Pool({
-//   host: process.env.DB_HOST,
-//   user: process.env.DB_USER,
-//   database: process.env.DB_NAME,
-//   password: process.env.DB_PASSWORD,
-//   port: parseInt('5433', 10)
-// });
 const serve = () => app.listen(PORT, () => {
   logger.info(`🌏 Express server started at http://localhost:${PORT}`);
 });
@@ -36,7 +28,6 @@ const connectToDB = async () => {
       message: 'Error shutting closing postgresql connection',
       error: err
     });
-    console.log('err :>> ', err);
   }
 };
 
