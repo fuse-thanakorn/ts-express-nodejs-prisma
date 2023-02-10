@@ -76,7 +76,7 @@ To edit environment variables, create a file with name `.env` and copy the conte
 |---|---|---|---|
 | NODE_ENV  | string  | `development` |API runtime environment. eg: `staging`  |
 |  PORT | number  | `8000` | Port to run the API server on |
-|  MONGO_URL | string  | `postgresql://<user>:<password>@<host>:5433/baania` | URL for MongoDB |
+|  POSTGRES_URL | string  | `postgresql://<user>:<password>@<host>:5433/baania` | URL for Postgresql |
 
 ## Logging
 The application uses [winston](https://github.com/winstonjs/winston) as the default logger. The configuration file is at `src/logger.ts`.
